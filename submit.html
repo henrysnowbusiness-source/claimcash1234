@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Offer - Claimable.cash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0B0F19;
+            --bg-secondary: #13171F;
+            --bg-card: #1A1F2E;
+            --accent-green: #00FFA3;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0AEC0;
+            --text-muted: #6B7280;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border);
+            padding: 32px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 163, 0.05);
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            font-weight: 700;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #00CC82;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 163, 0.1);
+            border: 1px solid var(--accent-green);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--accent-green);
+            text-decoration: none;
+            margin-bottom: 24px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to offers</a>
+        
+        <div class="header">
+            <div class="logo">CLAIMABLE.CASH</div>
+            <h1>Submit Your Offer</h1>
+            <p class="subtitle">We'll verify and send your payment within 24 hours</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            ✅ <strong>Submission received!</strong> We'll verify your offer and send payment to your email within 24 hours.
+        </div>
+
+        <div class="form-card">
+            <div class="info-box">
+                <strong>📝 What we need:</strong><br>
+                • Screenshot of your deposit/signup confirmation<br>
+                • Email for PayPal/Venmo payment<br>
+                • Which offer you completed
+            </div>
+
+            <form id="submissionForm">
+                <div class="form-group">
+                    <label for="offer">Which offer did you complete? *</label>
+                    <select id="offer" name="offer" required>
+                        <option value="">Select an offer...</option>
+                        <option value="underdog">Underdog Fantasy - $10</option>
+                        <option value="prizepicks">PrizePicks - $10</option>
+                        <option value="acorns">Acorns Investing - $15</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Your Email (for payment) *</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentMethod">Preferred Payment Method *</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="">Select method...</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="venmo">Venmo</option>
+                        <option value="giftcard">Gift Card (Amazon)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Your username on the app (optional)</label>
+                    <input type="text" id="username" name="username" placeholder="e.g., john_doe123">
+                </div>
+
+                <div class="form-group">
+                    <label for="screenshot">Upload Screenshot *</label>
+                    <div class="file-upload" onclick="document.getElementById('screenshot').click()">
+                        <p id="fileLabel">📸 Click to upload screenshot</p>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                            PNG, JPG, or PDF (max 5MB)
+                        </p>
+                        <input type="file" id="screenshot" name="screenshot" accept="image/*,.pdf" required onchange="handleFileSelect(event)">
+                    </div>
+                    <img id="imagePreview" class="preview-image" alt="Preview">
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Additional Notes (optional)</label>
+                    <textarea id="notes" name="notes" placeholder="Any special circumstances or questions?"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    Submit for Verification
+                </button>
+            </form>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px; color: var(--text-muted); font-size: 14px;">
+            <p>Questions? Email support@claimable.cash</p>
+        </div>
+    </div>
+
+    <script>
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const fileLabel = document.getElementById('fileLabel');
+            const preview = document.getElementById('imagePreview');
+
+            if (file) {
+                fileLabel.textContent = `✓ ${file.name}`;
+                
+                // Show preview for images
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = 'none';
+                }
+            }
+        }
+
+        document.getElementById('submissionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const submission = {
+                offer: formData.get('offer'),
+                email: formData.get('email'),
+                paymentMethod: formData.get('paymentMethod'),
+                username: formData.get('username'),
+                notes: formData.get('notes'),
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // For demo: store in localStorage
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            submissions.push(submission);
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+
+            // Show success message
+            document.getElementById('successMessage').classList.add('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Reset form
+            e.target.reset();
+            document.getElementById('fileLabel').textContent = '📸 Click to upload screenshot';
+            document.getElementById('imagePreview').style.display = 'none';
+
+            // Log for demo purposes
+            console.log('Submission received:', submission);
+            console.log('All submissions:', submissions);
+        });
+    </script>
+</body>
+</html>
